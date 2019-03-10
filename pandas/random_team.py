@@ -1,13 +1,15 @@
 import pandas as pd
 import random
 
-df = pd.read_csv('DA.csv',header=9)
+df = pd.read_csv('DA.csv', 
+                header=9, 
+                usecols=["학과(부) 및 전공", "학     번", "성     명"],
+                encoding='utf-8')
 
-df.drop(df.columns[7:], axis=1, inplace=True)
-df.drop(df.columns[2], axis=1, inplace=True)
-df.drop([0], inplace=True)
-df.drop(df.index[17:33], inplace=True)
-df.rename(columns={df.columns[5] : 'name'}, inplace=True )
+# df.drop(df.columns[7:], axis=1, inplace=True)
+# df.drop(df.columns[2], axis=1, inplace=True)
+df.dropna(axis=0, inplace=True)
+df.rename(columns={df.columns[0] : 'major', df.columns[1] : 'id', df.columns[2] : 'name'}, inplace=True )
 
 #get leaders group
 leaders = input("팀장을 입력하세요. ex) 김철수 김영희 >").split(" ")
@@ -51,8 +53,8 @@ team_mates = [t for t in team.values()]
 
 #표로 만들기
 df = pd.DataFrame({'팀' : pd.Series(leaders), '팀원': pd.Series(team_mates)})
-
+print(df)
 #csv로 저장
-df.to_csv('random_team.csv', index=False, na_rep = 'null', encoding='ms949')
+# df.to_csv('random_team.csv', index=False, na_rep = 'null', encoding='ms949')
 
 
