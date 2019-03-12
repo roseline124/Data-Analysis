@@ -1,0 +1,51 @@
+---
+title : "Linear Model"
+author : "Roseline"
+date : "March 12, 2019"
+output : html_document
+---
+
+<!-- # install.packages("knitr") -->
+<!-- # install.packages("rmarkdown") -->
+
+**0. R MarkDown Examples**
+```{r}
+summary(cars)
+```
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+**1. Build Data Frame**
+```{r}
+age <- c(18, 23, 25, 35, 65, 32, 51, 15, 37, 43, 23, 54, 38, 21, 35)
+
+maxHR <- c(202, 186, 187, 180, 156, 172, 160, 193, 174, 198, 183, 178, 164, 162, 158)
+
+df <- data.frame(age, maxHR)
+df
+
+```
+
+
+**2. Linear Model**
+```{r}
+lm_result <- lm(maxHR ~ age, data=df)
+lm_result
+```
+
+-0.5441age + 195.5490 = maxHR
+
+
+**3. ggplot : Visualization**
+```
+#install.packages("ggplot2")
+
+library(ggplot2)
+
+ggplot(df, aes(age, maxHR)) + geom_point() + xlab("Age") + ylab("Maximum Hearth Rate") + ggtitle("연령별 최대 심박수") + stat_smooth(method=lm, level=0.7)
+
+#플러스로 옵션을 더한다.
+
+```
