@@ -1,3 +1,7 @@
 .vscode/
 test*
 DA*
+*.csv
+*.xlsx
+*.xls
+*.txt
