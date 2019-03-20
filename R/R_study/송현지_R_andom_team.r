@@ -1,9 +1,10 @@
-R.andom.team <- function(fileName, leaders) {
+R.andom.team <- function(fileName, leaders, times=1) {
   # Assigns teams randomly from attendance file.
   # 
   # Args:
   #   fileName: file must be '.xls' or '.xlsx' format and below working directory
   #   leaders : vector of leaders' name for assigning teams 
+  #   times : How many times the teams will be shuffled?
   #
   # Returns: 
   #   Data frame of team randomly assigned 
@@ -17,11 +18,11 @@ R.andom.team <- function(fileName, leaders) {
            error=function(e) print("파일이 작업 폴더 안에 있는지, 또는 확장자를 확인해주세요."),
            warning=function(w) print("warning! warning!"),
            finully=NULL)
-
+  
   # Indexing
   df <- raw_df[, c(4,6,7)]
   df <- na.omit(df)  
-    
+  
   # Rename columns
   colnames(df) <- c("major", "id", "name")
   print(df)
@@ -29,22 +30,23 @@ R.andom.team <- function(fileName, leaders) {
   # Devide groups into two groups(leaders, mates)
   l_df <- df[df$name %in% leaders, ]
   m_df <- df[!df$name %in% leaders, ]
-
+  
   # Assign team numbers to leaders
   team_num <- seq(1,length(leaders))
   l_df["team"] <- team_num 
   
   # Random shuffle mates
-  m_df <- m_df[sample(nrow(m_df)), ]
- 
+  for(n in seq(times)){
+    m_df <- m_df[sample(nrow(m_df)), ]
+  } 
   # Assign team numbers to mates 
   
-  rep_num <- rep(team_num, round(nrow(m_df)/length(team_num)))
+  rep_num <- rep(team_num, (round(nrow(m_df)/length(team_num)))+1)
   m_df["team"] <- rep_num[1:nrow(m_df)] 
   
   # Row bind leaders_group and mates_group
   rand_teams <- rbind(l_df, m_df)
-
+  
   ########## Show result ##########  
   require(dplyr)
   
@@ -59,7 +61,7 @@ R.andom.team <- function(fileName, leaders) {
   
   # Show team result
   rand_teams <- rand_teams[order(rand_teams$team),]
-
+  
   print("랜덤 팀")  
   for( i in team_num){
     print(filter(rand_teams, team==i))
@@ -72,9 +74,9 @@ R.andom.team <- function(fileName, leaders) {
   # Other majors in each team 
   print("팀별 타과생 수")
   print(aggregate(tmp["major"], by=tmp["team"], sum)) 
-
+  
   return(rand_teams)  
 }
 
-leaders <- c("곽종현","송현지")
+leaders <- c("김주환","송현지", "정서윤", "주준태")
 R.andom.team("R_study/students.xls",leaders)
