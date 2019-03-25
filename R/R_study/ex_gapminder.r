@@ -30,13 +30,15 @@ df <- data.frame(
 
 p <- df %>%
   plot_ly(
-    x = ~x,
-    y = ~y,
-    frame = ~f,
+    x = ~x, 
+    y = ~y, 
+    frame = ~f, 
     type = 'scatter',
     mode = 'markers',
     showlegend = F
   )
+
+ggplotly(p)
 
 # Create a shareable link to your chart
 # Set up API credentials: https://plot.ly/r/getting-started
@@ -44,7 +46,7 @@ chart_link <- api_create(p, filename="animations-basic")
 chart_link
 
 ##############################
-gapminder
+gapminder$year
 p <- gapminder %>%
   plot_ly(
     x = ~gdpPercap, 
