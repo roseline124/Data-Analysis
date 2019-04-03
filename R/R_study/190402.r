@@ -40,10 +40,44 @@ library(car)
 grubbs.test() #outlier 측정 가능 
 
 
+x=seq(-5.5,4.5,length=200)
+
+y=dnorm(x)
+
+plot(x,y,
+     type="l",
+     lwd=1, 
+     ylim=c(0,0.4), 
+     col="#777777", 
+     main="정규분포", 
+#     col.main="#7777ff",
+     xlab="", 
+     ylab="",
+     las=1
+)
+
+x <- seq(-3,3,length.out=100)
+y <- dnorm(x)
+
+plot(x, y,
+     main="quantile",
+     type='l',
+     xlab="", 
+     ylab="",
+     )
+
+region.x <- x[1.37<x]
+region.y <- y[1.37<x]
+
+region.x <- c(region.x[1], region.x, tail(region.x, 1))
+region.y <- c(0, region.y, 0)
+
+polygon(region.x, region.y, density = 10) # 45도 각도 
+
+polygon(region.x, region.y, density = -1, col="red")
 
 
 
-
-
-
+pnorm(2,0,1)
+qnorm(0.03, 0, 1)
 
