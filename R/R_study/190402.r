@@ -60,22 +60,29 @@ x <- seq(-3,3,length.out=100)
 y <- dnorm(x)
 
 plot(x, y,
-     main="quantile",
+#     main="quantile",
      type='l',
      xlab="", 
      ylab="",
      )
 
-region.x <- x[1.37<x]
-region.y <- y[1.37<x]
+region.x <- x[(-1.96>x)]
+region.y <- y[(-1.96>x)]
+
+region.x2 <- x[(1.96<x)]
+region.y2 <- y[(1.96<x)]
 
 region.x <- c(region.x[1], region.x, tail(region.x, 1))
 region.y <- c(0, region.y, 0)
 
-polygon(region.x, region.y, density = 10) # 45도 각도 
+region.x2 <- c(region.x2[1], region.x2, tail(region.x2, 1))
+region.y2 <- c(0, region.y2, 0)
 
-polygon(region.x, region.y, density = -1, col="red")
-
+# polygon(region.x, region.y, density = 10) # 45도 각도 
+polygon(region.x, region.y, 
+        density = -1, col="gray")
+polygon(region.x2, region.y2, 
+        density = -1, col="gray")
 
 
 pnorm(2,0,1)
