@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # 기술 통계
 
+[★레퍼런스1 : 함수](https://data-analytics.tistory.com/10)
+
 <br>
 
 ### 빈도 분포(Frequency Distribution)
@@ -280,6 +282,18 @@ Z-score는 표준화 점수이다. 표준화 점수는 정규 분포를 만든 �
 
 표준화 점수의 이점으로는 분포의 모양이나 **점수의 상대적 위치는 바뀌지 않고 평균과 표준편차만 바뀐다**. 따라서 **서로 다른 평균과 표준편차를 가진 검사점수를 비교하는데** 특히 유용하다.
 
+<sub>
+※ [R에서의 Z-score 함수](https://stats.stackexchange.com/questions/6943/zscore-function-in-r)
+</sub>
+
+<br>
+
+```{r}
+z.test()
+```
+
+<br>
+
 **표본 각각의 경우 - 공식1**
 
 $$z = \frac{x-μ}{σ}$$ 또는 $$z = \frac{x-\bar{X}}{S}$$
@@ -362,4 +376,10 @@ one-tail 검증의 경우 가설 검정력이 높아져서 1종 오류가 일어
 
 <br>
 <br>
+
+
+
+
+
+
 
