@@ -1,0 +1,277 @@
+---
+title: "Data Analytics - Midterm"
+author: "광고홍보학과 14학번 송현지"
+date: "2019년 4월 23일"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1번 ~ 4번
+
+
+**1번**
+
+중앙집중치는 평균, 중앙값, 최빈값을 구한다. 
+
+- 평균 : 32.42
+- 중앙값 : 32.50
+- 최빈값은 32라고 나오지만, 모든 수의 빈도가 1이므로 이 경우 최빈값은 없다.
+
+```{r}
+region <- c(32, 37, 38, 30, 42, 35, 26, 28, 36, 33, 27, 25)
+df <- data.frame(region)
+df
+
+# 평균, 중앙값
+summary(df)
+
+# 최빈값 함수
+getMode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+# 최빈값
+getMode(df$region)
+```
+
+<br>
+
+**2번**
+
+- 변량 : 28.62879
+- 표준편차 : 5.350588
+
+```{r}
+# 변량 
+var(df$region)
+
+# 표준편차 
+sd(df$region)
+```
+
+<br>
+
+**3번**
+
+- 답 : 용산구, 서대문구
+
+<br>
+
+- 풀이 - 
+
+$1.5*IQR$은 12.75이다. 
+
+```{r}
+sort(df$region)
+
+# IQR
+iqr <- IQR(df$region)
+
+1.5*iqr
+```
+
+이에 대해 boxplot을 그려보면, 아래와 같이 나온다. 
+극단치는 표시되지 않으나 아슬아슬하게 극단치의 경계에 있어 outlier로 고려될 수 있는 것은 **'용산구', '서대문구'** 등이 있다. 
+
+```{r}
+boxplot(df$region)$stats
+```
+
+<br>
+
+**4번**
+
+outlier에 가장 영향을 많이 받는 것은 '3번 mean(평균)'이다. 
+
+<br>
+<br>
+
+## 5번 ~ 8번 
+
+**5번**
+
+- 답 : 0.02275013
+
+$$P(X≥4400) = P(\frac{X-4000}{200} ≥ \frac{4400-4000}{200}) = P(Z≥2) $$
+            
+표준 정규분포표에 따라 $P(Z<2) = 0.9772$이므로 $P(Z≥2)$는 $1 - 0.9772 = 0.0228$이다.
+아래처럼 pnorm으로 구하면 더 정확한 값을 구할 수 있다.
+
+pnorm은 X가 q이하일 확률을 계산한다. 4400시간 이상일 확률이므로 1에서 pnorm의 값을 뺀다.  
+
+```{r}
+x <- 1 - pnorm(q=4400, mean=4000,sd=200)
+```
+
+<br>
+
+**6번**
+
+- 답 : 34.02 ~ 35.98
+
+$σ=5 ,n=100, \bar{X}=35$이다. 표준오차 se는 $se = σ/\sqrt{n}$ 이므로 0.5이다. 상한선에 대해 qnorm(alpha/2, lower.tail = F)는 표준정규분포에서 상위 α/2 = 0.025에 해당하는 $Z_{0.025}$값은 1.959964이다. 모표준편차를 5로 가정하였으므로 오차 한계는 $error ≥ Z_{a/2} * \frac{σ}{\sqrt{n}}$이다.표본평균을 기준으로 error 값을 더하고, 빼서 신뢰구간을 구한다. 이에 따라 구한 모평균에 대한 95% 신뢰구간은 (34.02, 35.98)이다. 
+
+```{r}
+sigma <- 5
+n <- 100
+alpha <- 0.05 # 신뢰수준 
+
+se <- sigma/sqrt(n) # 표준오차 
+
+error <- qnorm(alpha/2, lower.tail = F)*se
+error
+
+# 신뢰 하한선
+lower <- round(35-error, digits=3)
+lower
+
+# 신뢰 상한선 
+upper <- round(35+error, digits=3)
+upper
+
+#신뢰 구간 
+c(lower, upper)
+```
+
+<br>
+
+**7번**
+
+$σ^2$이 미지수이므로 t-test를 사용한다. $t = \frac{\bar{X} - μ}{S/\sqrt{n}}$이다. 
+
+- 귀무가설은 $μ = 35$으로 설정하고, 이에 대한 대립가설은 $μ ≠ 35$으로 설정한다. 이때 α에 대한 기각역은 $|t| ≥ - t_{α/2}(n-1)$이다. 
+
+- 주어진 자료로부터 $n=5, \bar{X}=36, S = 5$ 이므로 t 관측값은 $$t_o = \frac{36-35}{5/\sqrt{16}} = 0.8$$이다. 
+
+- $|t| ≥ - t_{0.025}(15)$ 은 t분포표에 따라 2.131이다. t 관측값은 이보다 더 작으므로 신뢰수준 95%에서 귀무가설을 기각할 수 없다. 즉, 모평균은 35가 아니라고 할 수 없다. 
+
+<br>
+<br>
+
+## 8번 
+
+먼저 남성과 여성의 히스토그램을 보면 남성은 편향, 여성은 일부 균등해보인다. 하지만 표본의 크기가 적어 판단하기 어렵다. 
+
+```{r}
+male <- c(11, 17, 14, 10, 13, 11, 17, 10, 19, 14)
+female <- c(10, 13, 12, 15, 18, 14, 14, 17, 17, 10)
+
+df <- data.frame(male, female)
+df
+```
+
+**male**
+```{r echo=FALSE}
+hist(df$male, prob=T)
+
+qqnorm(df$male)
+qqline(df$male, col="red")
+```
+
+**female**
+```{r echo=FALSE}
+hist(df$female, prob=T)
+
+qqnorm(df$female)
+qqline(df$female, col="red")
+```
+<br>
+
+two-sample t-test를 하기 위해서는 3가지 가정이 필요하다. 독립성, 정규성, 동질성(등분산성)이다. 이 문제의 경우, 성별은 서로 독립적이므로 독립성을 충족하고, 동질성은 문제에서 가정하고 있으므로, 정규성 가정을 판단한다. 표본의 크기는 각각 10명 씩인 소표본에 해당하므로 샤피로 테스트를 사용한다.
+
+아래 두 p-value 모두 유의수준 0.05보다 크므로 정규성을 만족한다고 가정한다. 
+
+```{r}
+# 정규성 검증
+shapiro.test(df$male)
+shapiro.test(df$female)
+```
+
+
+<br>
+
+이제 t.test()를 실행한다. p-value는 0.7706으로 신뢰수준 95%에서 귀무가설을 기각한다. 즉, 남녀 성별에 따른 승진 소요 기간에는 차이가 없다고 할 수 없다. 
+
+```{r}
+t.test(df$male, df$female, var.equal = T)
+```
+
+effect size도 보자. cohen's d는 0.1323565이므로 p-value는 높고, d 값은 훨씬 작아 유의미하다. 
+
+```{r}
+cohens_d <- function(x, y) {
+  lx <- length(x)- 1
+  ly <- length(y)- 1
+  md  <- abs(mean(x) - mean(y))        ## mean difference (numerator)
+  csd <- lx * var(x) + ly * var(y)
+  csd <- csd/(lx + ly)
+  csd <- sqrt(csd)                     ## common sd computation
+  
+  cd  <- md/csd                        ## cohen's d
+  return(cd)
+  }
+
+result <- cohens_d(df$male, df$female)
+result
+```
+<br>
+<br>
+
+
+## 9번 
+
+3가지 가정 검정
+
+**정규성**
+
+각각 소표본이므로 샤피로 테스트를 사용한다.
+
+```{r}
+control <- c(0,1,0,3,1,2,4,2)
+day_1 <- c(1,3,2,2,4,6,3,4)
+day_2 <- c(5,4,7,8,6,3,2,5)
+day_3 <- c(7,1,6,9,10,12,8,7)
+
+df <- data.frame(control,day_1, day_2, day_3)
+df
+
+shapiro.test(df$control)
+
+shapiro.test(df$day_1)
+
+shapiro.test(df$day_2)
+
+shapiro.test(df$day_3)
+```
+
+모두 유의수준 0.05보다 높으므로 정규성을 만족한다. 
+
+<br>
+<br>
+
+**동질성**
+
+동질성 검증을 실행한다. Pr이 0.3531로 유의수준 0.05보다 크므로 F-value가 높게 책정되었다. 따라서 세 집단 간 분산에는 큰 차이가 없으므로 등분산을 가정한다. 
+
+```{r}
+library(car)
+y <- c(df$day_1, df$day_2, df$day_3) 
+group <- as.factor(c(rep(1, length(df$day_1)), 
+                     rep(2, length(df$day_2)),
+                     rep(3, length(df$day_3)))) 
+
+leveneTest(y, group)
+```
+
+<br>
+<br>
+
+## 10번 
+
+
+
+
