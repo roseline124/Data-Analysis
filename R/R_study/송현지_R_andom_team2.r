@@ -79,5 +79,5 @@ R.andom.team <- function(fileName, leaders, times=1) {
   return(rand_teams)  
 }
 
-leaders <- c("김주환","송현지", "정서윤", "주준태")
-R.andom.team("R_study/students.xls",leaders)
+leaders <- c("윤준범","송현지", "주준태")
+R.andom.team("students.xls",leaders)
