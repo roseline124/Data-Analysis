@@ -71,7 +71,6 @@ region.y <- y[(-1.96>x)]
 
 region.x2 <- x[(1.96<x)]
 region.y2 <- y[(1.96<x)]
-
 region.x <- c(region.x[1], region.x, tail(region.x, 1))
 region.y <- c(0, region.y, 0)
 

@@ -35,7 +35,7 @@ R.andom.team <- function(fileName, leaders) {
   team_num <- seq(1,length(leaders))
   l_df["team"] <- team_num 
   
-  # Random shuffle mates
+
   m_df <- m_df[sample(nrow(m_df)), ]
   
   # Assign team numbers to mates
