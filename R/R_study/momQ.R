@@ -1,6 +1,14 @@
 library(readxl)
 
-mq <- read_excel("momq_2018.xlsx")
+mq <- read_excel("momq.xlsx")
+
+library(dplyr)
+
+
+
+
+subset(mq, 회원번호==주문결제일)
+
 # mq <- read.csv("momq_2018.csv")
 
 View(mq)
@@ -10,8 +18,13 @@ str(mq)
 class(mq$주문결제일시)
 apply(mq$주문주문결제일시, substr)
 
-mq["dates"] <- substr(mq$주문결제일시, 1,10)
-mq["dates"]      
+mq["주문결제일"] <- substr(mq$주문결제일시, 1,10)
+mq["주문결제일"]   
+
+mq %>%
+  group_by(회원번호, 주문결제일) %>%
+  tally()
+
 
 mq$주문결제일시
 
