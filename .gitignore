@@ -2,6 +2,8 @@
 test*
 dist*
 DA*
+mom*
+Mom*
 *.csv
 *.xlsx
 *.xls
@@ -9,3 +11,5 @@ DA*
 *.zip
 *.html
 .Rprofile
+.RData
+.Rhistory
