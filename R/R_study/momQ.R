@@ -1,15 +1,10 @@
 library(readxl)
-
-mq <- read_excel("momq.xlsx")
-
 library(dplyr)
 
+# subset(mq, 회원번호==주문결제일)
 
+mq <- read.csv("momq_2018.csv")
 
-
-subset(mq, 회원번호==주문결제일)
-
-# mq <- read.csv("momq_2018.csv")
 
 View(mq)
 

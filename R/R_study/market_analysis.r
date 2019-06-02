@@ -6,7 +6,7 @@ library(readxl)
 library(dplyr)
 
 #데이터 호출
-MQ <- read_excel("momq_fin.xlsx")
+MQ <- read_excel("momq_2018.xlsx")
 RE.user <- read_excel("rebuy.xlsx")
 
 # 재구매 회원만 필터링 
